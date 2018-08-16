@@ -3,6 +3,7 @@ from werkzeug import generate_password_hash, check_password_hash
 
 import geocoder
 #import urllib2
+import requests
 import urllib.request
 import json
 
@@ -47,11 +48,13 @@ class Place(object):
     lat, lng = self.address_to_latlng(address)
     
     query_url = 'https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=5000&gscoord={0}%7C{1}&gslimit=20&format=json'.format(lat, lng)
-    g = urllib2.urlopen(query_url)
-    results = g.read()
-    g.close()
+    #g = urllib2.urlopen(query_url)    
+    #results = g.read()
+    #g.close()
 
-    data = json.loads(results)
+    #data = json.loads(results)
+    response = requests.get(query_url)
+    data = json.loads(response.text)
     
     places = []
     for place in data['query']['geosearch']:
